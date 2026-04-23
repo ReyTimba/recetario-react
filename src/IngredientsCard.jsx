@@ -6,7 +6,27 @@ function IngredientsCard(props) {
         qty: "",
         unit: ""
     });
-    
+
+    function isIngredientValid() {
+        const hasName = !!ingredient.name?.trim();
+        const hasQty = !!ingredient.qty;
+        const hasUnit = !!ingredient.unit;
+
+        return (hasName && (hasQty === hasUnit));
+    }
+
+    function handleAdd() {
+        if (!isIngredientValid()) return;
+
+        props.onAddIngredient(ingredient);
+
+        setIngredient({
+            name: "",
+            qty: "",
+            unit: ""
+        });
+    }
+
     return (
         <section className="ingredients-card">
             <div className="section-head section-head-inline">
@@ -50,13 +70,13 @@ function IngredientsCard(props) {
                 <div className="field">
                     <label htmlFor="ingredientUnitSelect">Unidad</label>
                     <select id="ingredientUnitSelect"
-                    value={ingredient.unit}
-                    onChange={(event) => {
-                        setIngredient({
-                            ...ingredient,
-                            unit: event.target.value
-                        });
-                    }}>
+                        value={ingredient.unit}
+                        onChange={(event) => {
+                            setIngredient({
+                                ...ingredient,
+                                unit: event.target.value
+                            });
+                        }}>
                         <option value="">Sin unidad</option>
                         <option value="gr">gr</option>
                         <option value="kg">kg</option>
@@ -69,27 +89,18 @@ function IngredientsCard(props) {
                 </div>
 
                 <div className="ingredient-entry-action">
-                    <button id="addIngredientBtn" 
-                    className="btn btn-secondary" 
-                    type="button"
-                    onClick={() => {
-                        props.onAddIngredient(ingredient)
-                    }}>
+                    <button id="addIngredientBtn"
+                        className="btn btn-secondary"
+                        type="button"
+                        onClick={handleAdd}>
                         Añadir
                     </button>
                 </div>
             </div>
 
-            <ul id="tempIngredientsList" className="temp-ingredients-list">
-                {/*render*/}
-                {props.ingredients.map((ingredient, index) => (
-                    <li key={index}>
-                        <span>
-                           {ingredient.name} - {ingredient.qty} {ingredient.unit}
-                        </span>
-                    </li>
-                ))}
-            </ul>
+
+
+
         </section>
     )
 }

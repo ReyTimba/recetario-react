@@ -1,5 +1,6 @@
 import { useState } from "react";
 import IngredientsCard from "./IngredientsCard";
+
 function RecipeForm(props) {
   const [recipe, setRecipe] = useState({
     title: "",
@@ -7,20 +8,35 @@ function RecipeForm(props) {
     category: "",
     ingredients: [],
     steps: "",
-    tags:[],
+    tags: [],
     favorite: false,
   });
 
-console.log("ingredients:", recipe.ingredients);
 
-function addIngredients(ingredient) {
-  setRecipe({
-    ...recipe,
-    ingredients: [
-      ...recipe.ingredients, ingredient
-    ]
-  })
-}
+  function addIngredients(newIngredient) {
+    setRecipe((prevRecipe) => ({
+      ...prevRecipe,
+      ingredients: [
+        ...prevRecipe.ingredients, newIngredient
+      ]
+    }));
+  }
+
+  function isRecipeValid() {
+    const hasTitle = !!recipe.title?.trim();
+    const hasAvailability = !!recipe.availability;
+    const hasCategory = !!recipe.category
+    const hasIngredients = recipe.ingredients.length > 0;
+    const hasSteps = !!recipe.steps?.trim();
+    return ( hasTitle && hasAvailability && hasCategory && hasIngredients && hasSteps )
+  }
+
+  function handleAddRecipe(event) {
+    event.preventDefault();
+    if (!isRecipeValid()) return;
+    props.onAddRecipe(recipe);
+    props.onCancel();
+  }
 
   return (
     <section id="formView" className="view">
@@ -30,54 +46,54 @@ function addIngredients(ingredient) {
           <p>Introduce los datos principales y añade ingredientes uno por uno</p>
         </div>
         <button id="cancelRecipeFormBtn" className="btn btn-primary" type="button"
-        onClick={() => {props.onCancel()}}>
+          onClick={() => { props.onCancel() }}>
           Cancelar
         </button>
       </div>
-      <form id="recipeForm" className="recipe-form-card">
+      <form id="recipeForm" className="recipe-form-card" onSubmit={handleAddRecipe}>
         <div className="form-grid">
           {/*in_titulo*/}
           <div className="field field-span-2">
             <label htmlFor="titleInput">Título</label>
-            <input id="titleInput" 
-            type="text" 
-            placeholder="Ej: Pollo al horno" 
-            value={recipe.title}
-            onChange={(event) => {
-              setRecipe({
-                ...recipe,
-                title: event.target.value,
-              });
-            }}
+            <input id="titleInput"
+              type="text"
+              placeholder="Ej: Pollo al horno"
+              value={recipe.title}
+              onChange={(event) => {
+                setRecipe({
+                  ...recipe,
+                  title: event.target.value,
+                });
+              }}
             />
           </div>
-            {/*in_availability*/}
+          {/*in_availability*/}
           <div className="field">
             <label htmlFor="availabilitySelect">Disponibilidad</label>
             <select id="availabilitySelect"
-            value= {recipe.availability}
-            onChange={(event) => {
-              setRecipe({
-                ...recipe,
-                availability: event.target.value,
-              });
-            }}>
+              value={recipe.availability}
+              onChange={(event) => {
+                setRecipe({
+                  ...recipe,
+                  availability: event.target.value,
+                });
+              }}>
               <option value="">Selecciona una opción</option>
               <option value="menu">Menú</option>
               <option value="carta">Carta</option>
             </select>
           </div>
-            {/*in_category*/}
+          {/*in_category*/}
           <div className="field">
             <label htmlFor="categorySelect">Categoría</label>
             <select id="categorySelect"
-            value={recipe.category}
-            onChange={(event) => {
-              setRecipe({
-                ...recipe,
-                category: event.target.value,
-              })
-            }}>
+              value={recipe.category}
+              onChange={(event) => {
+                setRecipe({
+                  ...recipe,
+                  category: event.target.value,
+                })
+              }}>
               <option value="">Selecciona una categoría</option>
               <option value="Ensaladas y Cremas">Ensaladas y Cremas</option>
               <option value="Legumbres, Guisos y Sopas">Legumbres, Guisos y Sopas</option>
@@ -88,7 +104,7 @@ function addIngredients(ingredient) {
               <option value="Postres y Repostería">Postres y Repostería</option>
             </select>
           </div>
-            {/*in_steps*/}
+          {/*in_steps*/}
           <div className="field field-span-2">
             <label htmlFor="stepsInput">Preparación</label>
             <textarea
@@ -104,21 +120,21 @@ function addIngredients(ingredient) {
               }}
             ></textarea>
           </div>
-            {/*in_tags*/}    
+          {/*in_tags*/}
           <div className="field field-span-2">
             <label htmlFor="tagsSelect">Tags</label>
             <select id="tagsSelect" multiple size="5"
-            value={recipe.tags}
-            onChange={(event) => {
-              const selectedTags = Array.from(
-                event.target.selectedOptions, 
-                (options) => options.value
-              );
-              setRecipe({
-                ...recipe,
-                tags: selectedTags,
-              })
-            }}>
+              value={recipe.tags}
+              onChange={(event) => {
+                const selectedTags = Array.from(
+                  event.target.selectedOptions,
+                  (options) => options.value
+                );
+                setRecipe({
+                  ...recipe,
+                  tags: selectedTags,
+                })
+              }}>
               <option value="picante">picante</option>
               <option value="frio">frio</option>
               <option value="caliente">caliente</option>
@@ -129,8 +145,19 @@ function addIngredients(ingredient) {
           </div>
         </div>
 
-       <IngredientsCard onAddIngredient={addIngredients}
-       ingredients={recipe.ingredients}/>
+        <IngredientsCard onAddIngredient={addIngredients} />
+
+        <ul id="tempIngredientsList" className="temp-ingredients-list">
+          {/*render*/}
+          {recipe.ingredients.map((ingredient, index) => (
+            <li key={index}>
+              <span>
+                {ingredient.name} - {ingredient.qty} {ingredient.unit}
+              </span>
+            </li>
+          ))}
+        </ul>
+
 
         <div className="form-footer">
           <label className="check-row">

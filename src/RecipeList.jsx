@@ -1,18 +1,22 @@
-//import { useState } from "react";
-function RecipeList() {
-    //const [recipe, setRecipe] = useState([]);
+function RecipeList({ recipes }) {
+
     return (
 
-        <section class="recipes-card">
-            <div class="section-head section-head-inline">
+        <section className="recipes-card">
+            <div className="section-head section-head-inline">
                 <div>
                     <h2>Recetas</h2>
                     <p>Tu lista principal</p>
                 </div>
             </div>
 
-            <ul id="recipesList" class="recipes-list">
-
+            <ul id="recipesList" className="recipes-list">
+                {recipes.map((recipe, index) => (
+                    <li key={index}>
+                        <span>{recipe.title}</span>
+                        <button data-id={recipe.id}>Detalles</button>
+                    </li>
+                ))}
             </ul>
         </section>
     )
