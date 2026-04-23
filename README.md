@@ -1,16 +1,38 @@
-# React + Vite
+# Recetario App (React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación desarrollada en React para gestionar recetas y sus ingredientes.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Crear recetas
+- Añadir ingredientes de forma dinámica
+- Gestionar información básica de cada receta
+- Formulario controlado con estado en React
 
-## React Compiler
+## Tecnologías
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- JavaScript (ES6+)
+- Vite
+- CSS
 
-## Expanding the ESLint configuration
+## Estado del proyecto
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+En desarrollo.  
+Actualmente se está trabajando en la gestión de ingredientes y renderizado de listas.
+
+## Aprendizaje
+
+Este proyecto está enfocado en reforzar:
+
+- Manejo de estado con useState
+- Componentes funcionales
+- Comunicación entre componentes (props)
+- Formularios controlados
+- Estructuración de aplicaciones en React
+
+## Cómo ejecutar el proyecto
+
+```bash
+npm install
+npm run dev
