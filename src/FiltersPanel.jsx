@@ -9,7 +9,7 @@ function FiltersPanel() {
 
             <div className="filters-stack">
                 <div className="field">
-                    <label for="queryInput">Buscar</label>
+                    <label htmlFor="queryInput">Buscar</label>
                     <input
                         id="queryInput"
                         type="text"
@@ -18,7 +18,7 @@ function FiltersPanel() {
                 </div>
 
                 <div className="field">
-                    <label for="filterCategorySelect">Categoría</label>
+                    <label htmlFor="filterCategorySelect">Categoría</label>
                     <select id="filterCategorySelect">
                         <option value="all">Todas</option>
                         <option value="Ensaladas y Cremas">Ensaladas y Cremas</option>
@@ -32,7 +32,7 @@ function FiltersPanel() {
                 </div>
 
                 <div className="field">
-                    <label for="filterAvailabilitySelect">Disponibilidad</label>
+                    <label htmlFor="filterAvailabilitySelect">Disponibilidad</label>
                     <select id="filterAvailabilitySelect">
                         <option value="all">Todas</option>
                         <option value="menu">Menú</option>
@@ -41,7 +41,7 @@ function FiltersPanel() {
                 </div>
 
                 <div className="field">
-                    <label for="filterTagsSelect">Tags</label>
+                    <label htmlFor="filterTagsSelect">Tags</label>
                     <select id="filterTagsSelect" multiple size="5">
                         <option value="picante">picante</option>
                         <option value="frio">frio</option>

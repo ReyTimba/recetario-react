@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FiltersPanel from "./FiltersPanel";
 import RecipeList from "./RecipeList";
 import RecipeForm from "./RecipeForm";
 
-
-
 function App() {
-  const [view, setView] = useState("list");
-  const [recipes, setRecipes] = useState([]);
+  const STORAGE_KEY = "recetario_react"
 
-  //console.log("recetas:", recipes);
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const parsed = saved ? JSON.parse(saved) : null;
+
+  const [view, setView] = useState(parsed?.view ?? "list");
+  const [recipes, setRecipes] = useState(parsed?.recipes ?? []);
+
+  useEffect(() => {
+    const stateToSave = { view, recipes };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+  }, [view, recipes]);
 
   function addProp(obj, key, value) {
     return {
-      ...obj, 
+      ...obj,
       [key]: value
     }
   }
@@ -37,20 +43,20 @@ function App() {
             <h1 className="app-title">Gestión de recetas</h1>
           </div>
           <button id="openRecipeFormBtn" className="btn btn-primary" type="button"
-          onClick= {() => setView("form")}>
+            onClick={() => setView("form")}>
             Agregar
           </button>
         </header>
         <div className="list-layout">
           <FiltersPanel />
-          <RecipeList  recipes={recipes}/>
+          <RecipeList recipes={recipes} />
         </div>
       </section>
     )
   }
   if (view === "form") {
     return (
-      <RecipeForm onCancel={goBack} onAddRecipe={addRecipeToState}/>
+      <RecipeForm onCancel={goBack} onAddRecipe={addRecipeToState} />
     )
   }
   return null
