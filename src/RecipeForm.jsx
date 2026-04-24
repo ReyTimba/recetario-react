@@ -28,7 +28,7 @@ function RecipeForm(props) {
     const hasCategory = !!recipe.category
     const hasIngredients = recipe.ingredients.length > 0;
     const hasSteps = !!recipe.steps?.trim();
-    return ( hasTitle && hasAvailability && hasCategory && hasIngredients && hasSteps )
+    return (hasTitle && hasAvailability && hasCategory && hasIngredients && hasSteps)
   }
 
   function handleAddRecipe(event) {
@@ -161,7 +161,14 @@ function RecipeForm(props) {
 
         <div className="form-footer">
           <label className="check-row">
-            <input id="favoriteCheckbox" type="checkbox" />
+            <input id="favoriteCheckbox" type="checkbox"
+              checked={recipe.favorite}
+              onChange={(event) => {
+                setRecipe({
+                  ...recipe,
+                  favorite: event.target.checked
+                })
+              }} />
             <span>Marcar como favorita</span>
           </label>
 

@@ -1,4 +1,6 @@
-function RecipeList({ recipes }) {
+function RecipeList({ recipes, onDetails, onGetId }) {
+
+
 
     return (
 
@@ -14,7 +16,16 @@ function RecipeList({ recipes }) {
                 {recipes.map((recipe, index) => (
                     <li key={index}>
                         <span>{recipe.title}</span>
-                        <button data-id={recipe.id}>Detalles</button>
+                        <button data-id={recipe.id}
+                        onClick={() => {
+                            
+                            onGetId(recipe.id);
+
+                            onDetails();
+                            
+                        }}
+                        
+                        >Detalles</button>
                     </li>
                 ))}
             </ul>
