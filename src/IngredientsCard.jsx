@@ -18,7 +18,7 @@ function IngredientsCard(props) {
     function handleAdd() {
         if (!isIngredientValid()) return;
 
-        props.onAddIngredient(ingredient);
+        props.onAddIngredient({...ingredient, id: crypto.randomUUID()});
 
         setIngredient({
             name: "",

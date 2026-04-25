@@ -1,4 +1,4 @@
-function RecipeList({ recipes, onDetails, onGetId }) {
+function RecipeList({ recipes, onDetails }) {
 
 
 
@@ -13,16 +13,12 @@ function RecipeList({ recipes, onDetails, onGetId }) {
             </div>
 
             <ul id="recipesList" className="recipes-list">
-                {recipes.map((recipe, index) => (
-                    <li key={index}>
+                {recipes.map((recipe) => (
+                    <li key={recipe.id}>
                         <span>{recipe.title}</span>
                         <button data-id={recipe.id}
                         onClick={() => {
-                            
-                            onGetId(recipe.id);
-
-                            onDetails();
-                            
+                            onDetails(recipe.id);                            
                         }}
                         
                         >Detalles</button>

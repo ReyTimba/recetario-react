@@ -12,7 +12,7 @@ function App() {
 
   const [view, setView] = useState(parsed?.view ?? "list");
   const [recipes, setRecipes] = useState(parsed?.recipes ?? []);
-  const [selectRecipe, setSelectRecipe] = useState(parsed?.recipe ?? {})
+  const [selectRecipe, setSelectRecipe] = useState(parsed?.selectRecipe ?? null)
 
   useEffect(() => {
     const stateToSave = { view, recipes, selectRecipe };
@@ -28,23 +28,27 @@ function App() {
 
   function addRecipeToState(newRecipe) {
     setRecipes((prevRecipes) => [
-      ...prevRecipes, addProp(newRecipe, "id", Date.now())
+      ...prevRecipes, addProp(newRecipe, "id", crypto.randomUUID())
     ])
-  }
-
-  function selectById(id) {
-    const selectedRecipe = recipes.find(recipe => recipe.id === id);
-    setSelectRecipe({
-      ...selectRecipe, selectedRecipe
-    })
   }
 
   function goBack() {
     setView("list");
   };
 
-  function goToDetails() {
-    setView("details");
+  function handleShowDetails(id) {
+  const selectedRecipe = recipes.find(r => r.id === id);
+  if (!selectedRecipe) return;
+
+  setSelectRecipe(selectedRecipe);
+  setView("details");
+}
+
+  function deleteRecipe(id) {
+    const filteredRecipes = recipes.filter(recipe => recipe.id !== id);
+    setRecipes(filteredRecipes);
+    setSelectRecipe(null);
+    setView("list")
   }
 
   if (view === "list") {
@@ -62,7 +66,7 @@ function App() {
         </header>
         <div className="list-layout">
           <FiltersPanel />
-          <RecipeList recipes={recipes} onDetails={goToDetails} onGetId={selectById}/>
+          <RecipeList recipes={recipes} onDetails={handleShowDetails}  />
         </div>
       </section>
     )
@@ -74,7 +78,10 @@ function App() {
   }
   if (view === "details") {
     return (
-      <RecipeDetails goToList={goBack}/>
+      <RecipeDetails
+        goToList={goBack} 
+        selectRecipe={selectRecipe}
+        deleteRecipe={deleteRecipe}/>
     )
   }
   return null

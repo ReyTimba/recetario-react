@@ -1,17 +1,19 @@
 import { useState } from "react";
 
-function RecipeDetails({ goToList }) {
+function RecipeDetails({ goToList, selectRecipe, deleteRecipe }) {
     const [base, setBase] = useState(1);
     const [target, setTarget] = useState(1);
 
-    return (
+    if (!selectRecipe) {
+            return null;
+        }
 
+    return (
+        
         <section id="recipeDetailView" className="view">
             <div className="view-topbar">
                 <button id="backToListBtn" className="btn btn-ghost" type="button"
-                    onClick={() => {
-                        goToList()
-                    }}>
+                    onClick={goToList}>
                     Volver
                 </button>
 
@@ -19,7 +21,10 @@ function RecipeDetails({ goToList }) {
                     <button id="editRecipeBtn" className="btn btn-secondary" type="button">
                         Editar
                     </button>
-                    <button id="deleteRecipeBtn" className="btn btn-danger" type="button">
+                    <button id="deleteRecipeBtn" className="btn btn-danger" type="button"
+                    onClick={() => {
+                        deleteRecipe(selectRecipe.id);
+                    }}>
                         Eliminar
                     </button>
                 </div>
@@ -28,11 +33,13 @@ function RecipeDetails({ goToList }) {
             <article className="detail-card">
                 <header className="detail-header">
                     <div className="detail-title-block">
-                        <h2 id="recipeDetailTitle">Nombre de la receta</h2>
+                        <h2 id="recipeDetailTitle">
+                            {selectRecipe.title}
+                        </h2>
 
                         <div className="detail-meta">
-                            <span id="recipeDetailCategory" className="badge">Categoría</span>
-                            <span id="recipeDetailAvailability" className="badge">Disponibilidad</span>
+                            <span id="recipeDetailCategory" className="badge">{selectRecipe.category}</span>
+                            <span id="recipeDetailAvailability" className="badge">{selectRecipe.availability}</span>
                         </div>
                     </div>
 
@@ -53,24 +60,25 @@ function RecipeDetails({ goToList }) {
                     <div className="scale-box">
                         <div className="field">
                             <label htmlFor="recipeScaleBaseInput">Raciones base</label>
-                            <input id="recipeScaleBaseInput" 
-                            type="number" 
-                            min="1" 
-                            step="1" 
-                            value={base} 
-                            onChange={(event) => {
-                                setBase(Number(event.target.value))}}
-                                />
+                            <input id="recipeScaleBaseInput"
+                                type="number"
+                                min="1"
+                                step="1"
+                                value={base}
+                                onChange={(event) => {
+                                    setBase(Number(event.target.value))
+                                }}
+                            />
                         </div>
 
                         <div className="field">
                             <label htmlFor="recipeScaleTargetInput">Raciones deseadas</label>
-                            <input id="recipeScaleTargetInput" 
-                            type="number" 
-                            min="1" 
-                            step="1" 
-                            value={target}
-                            onChange={(event) => {setTarget(Number(event.target.value))}} 
+                            <input id="recipeScaleTargetInput"
+                                type="number"
+                                min="1"
+                                step="1"
+                                value={target}
+                                onChange={(event) => { setTarget(Number(event.target.value)) }}
                             />
                         </div>
 
@@ -83,8 +91,13 @@ function RecipeDetails({ goToList }) {
                 <section className="detail-grid">
                     <section className="detail-section">
                         <h3>Ingredientes</h3>
-                        <ul id="recipeDetailIngredientsList" className="detail-list">
+                        <ul id="recipeDetailIngredientsList" className="detail-list" >
                             {/*<!-- render -->*/}
+                            {selectRecipe?.ingredients?.map(({ id, name, qty, unit }) => {
+                                return (
+                                <li key={id}>{name} - {qty}{unit}</li>
+                            );
+                            })}
                         </ul>
                     </section>
 
@@ -92,6 +105,7 @@ function RecipeDetails({ goToList }) {
                         <h3>Tags</h3>
                         <ul id="recipeDetailTagsList" className="tags-list">
                             {/*<!-- render -->*/}
+
                         </ul>
                     </section>
                 </section>
@@ -100,6 +114,7 @@ function RecipeDetails({ goToList }) {
                     <h3>Preparación</h3>
                     <div id="recipeDetailSteps" className="recipe-steps">
                         {/*<!-- render -->*/}
+                        <p>{selectRecipe.steps}</p>
                     </div>
                 </section>
 
